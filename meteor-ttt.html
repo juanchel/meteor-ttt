@@ -9,24 +9,20 @@
   Welcome
 </template>
 
-<template name="one">
-  {{> board}}
-</template>
-
-<template name="two">
+<template name="play">
   {{> board}}
 </template>
 
 <template name="board">
   {{player}}
-  test
+
   {{#each grid}}
-    {{> row}}
+    <div class="ttt-row row{{@index}}" data-row="{{@index}}">{{> row}}</div>
   {{/each}}
 </template>
 
 <template name="row">
   {{#each vals}}
-    <div class="ttt-button">{{this}}</div>
-  {{/ each}}
+    <div class="ttt-button player{{player}} col{{@index}}" data-col="{{@index}}">{{this}}</div>
+  {{/each}}
 </template>

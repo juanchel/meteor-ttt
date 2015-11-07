@@ -1,3 +1,5 @@
+Grid = new Mongo.Collection("grid");
+
 if (Meteor.isClient) {
   // counter starts at 0
   Session.setDefault('counter', 0);
@@ -16,8 +18,11 @@ if (Meteor.isClient) {
   });
 
   Template.body.helpers({
+    grid: function () {
+      return Grid.find({});
+    },
     rows: [
-      {vals: ["0", "2", "0"]},
+      {vals: ["0", "3", "0"]},
       {vals: ["0", "0", "0"]},
       {vals: ["0", "1", "0"]}
     ]

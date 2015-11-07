@@ -14,6 +14,15 @@ if (Meteor.isClient) {
       Session.set('counter', Session.get('counter') + 1);
     }
   });
+
+  Template.body.helpers({
+    rows: [
+      {vals: ["0", "2", "0"]},
+      {vals: ["0", "0", "0"]},
+      {vals: ["0", "1", "0"]}
+    ]
+  });
+
 }
 
 if (Meteor.isServer) {

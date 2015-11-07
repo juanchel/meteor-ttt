@@ -9,15 +9,17 @@
   Welcome
 </template>
 
-<template name="player1">
+<template name="one">
   {{> board}}
 </template>
 
-<template name="player2">
+<template name="two">
   {{> board}}
 </template>
 
 <template name="board">
+  {{player}}
+  test
   {{#each grid}}
     {{> row}}
   {{/each}}
@@ -27,8 +29,4 @@
   {{#each vals}}
     <div class="ttt-button">{{this}}</div>
   {{/ each}}
-</template>
-
-<template name="task">
-  <p>{{text}}</p>
 </template>

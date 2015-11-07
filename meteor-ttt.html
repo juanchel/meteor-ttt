@@ -3,14 +3,24 @@
 </head>
 
 <body>
+</body>
+
+<template name="main">
+  Welcome
+</template>
+
+<template name="player1">
+  {{> board}}
+</template>
+
+<template name="player2">
+  {{> board}}
+</template>
+
+<template name="board">
   {{#each grid}}
     {{> row}}
   {{/each}}
-</body>
-
-<template name="hello">
-  <button>Click Me</button>
-  <p>You've pressed the button {{counter}} times.</p>
 </template>
 
 <template name="row">

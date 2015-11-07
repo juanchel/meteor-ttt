@@ -65,12 +65,10 @@ function getGrid() {
  * @param {number} player the player number
  */
 function takeMove(e, player) {
-
   // Use the event to find the column and row of the clicked element
   var $col = $(e.currentTarget);
-  var colNum;
   var rowNum = $(e.currentTarget).parent().data('row');
-
+  var colNum;
   if ($col.hasClass('col1')) {
     colNum = 1;
   } else if ($col.hasClass('col2')) {
@@ -79,9 +77,23 @@ function takeMove(e, player) {
     colNum = 0;
   }
 
+  var pChar = player == 1 ? 'X' : 'O';
+
   // Update it in the collection
   var rowId = Grid.find({}).fetch()[rowNum]['_id'];
   var rowVals = Grid.find({}).fetch()[rowNum]['vals'];
-  rowVals[colNum] = player == 1 ? 'X' : 'O';
+  rowVals[colNum] = pChar;
   Grid.update(rowId, {$set: {vals: rowVals}});
+
+  // Check if the current player won, first check the row and column and then both diagonals
+  var curGrid = getGrid();
+  if (curGrid[3*rowNum] == pChar && curGrid[3*rowNum+1] == pChar && curGrid[3*rowNum+2] == pChar) {
+    alert('winner');
+  } else if (curGrid[colNum] == pChar && curGrid[3+colNum] == pChar && curGrid[6+colNum] == pChar) {
+    alert('dinner');
+  } else if (curGrid[0] == pChar && curGrid[4] == pChar && curGrid[8] == pChar) {
+    alert('side');
+  } else if (curGrid[2] == pChar && curGrid[4] == pChar && curGrid[6] == pChar) {
+    alert('tap');
+  }
 }

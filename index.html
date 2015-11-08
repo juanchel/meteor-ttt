@@ -1,23 +1,41 @@
 <head>
-  <title>meteor-ttt</title>
+  <title>Meteor Tic Tac Toe</title>
+  <link href='https://fonts.googleapis.com/css?family=Raleway:300,500' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
 </head>
 
 <body>
 </body>
-
 <template name="game">
-  Welcome to tic tac toe
-  <a href="/player1">Player 1</a>
-  <a href="/player2">Player 2</a>
+  {{> header}}
+  <div class="content">
+    <div class="main-body">
+      <div class="quote">
+      “Let your plans be dark and impenetrable as night, and when you move, fall like a thunderbolt.” <br/>
+      ― Sun Tzu, The Art of War
+      </div><br/>
+      Welcome to tic tac toe! Tic tac toe is a highly tactical turn-based strategy game played between two adversaires on a 3x3 grid. 
+      Will you be able to outwit your opponents and claim victory on the grid? <br/><br/>
+      Select a side and find out: <br/>
+      <a href="/player1">Player 1</a><br/>
+      <a href="/player2">Player 2</a><br/>
+    </div>
+  </div>
 </template>
 
 <template name="play">
-  {{> board}}
+  {{> header}}
+  <div class="content">
+    <div class="main-body center">
+      {{> board}}
+    </div>
+  </div>
 </template>
 
 <template name="board">
 
   <div class="score">
+    Current Standings <br/>
     {{#if equal player 1}}
       {{winsone}} - {{winstwo}}
     {{else}}
@@ -26,28 +44,45 @@
   </div>
 
   Player {{player}}
-  {{#each grid}}
-    <div class="ttt-row row{{@index}}" data-row="{{@index}}">{{> row}}</div>
-  {{/each}}
+  <div class="ttt-grid">
+    {{#each grid}}
+      <div class="ttt-row row{{@index}}" data-row="{{@index}}">{{> row}}</div>
+      <div style="clear:both"></div>
+    {{/each}}
+  </div>
   
   <div class="">
     {{#if equal 0 turn}}
-      <div class="reset">Reset</div>
-      The game is over!
+      <div class="end-center">
+        <div class="reset end-button">Reset</div>
+      </div>
+      The game is over! <br/>
       {{#if equal player victor}}
-        You have emerged victorious! You will go second next.
+        You have emerged victorious! <br/>
+        You will go second next. <br/>
         {{#if resigned}}
-          Your opponent resigned!
+          Your opponent has resigned! <br/>
         {{/if}}
       {{else}}
-        You got bodied! Don't worry you get to go first next time.
+        {{#if equal 0 victor}}
+          It ended in a draw. <br/>
+          A random player will be chosen to move first next. <br/>
+        {{else}}
+          You got bodied! <br/>
+          Don't worry, you get to go first next time. <br/>
+        {{/if}}
       {{/if}}
     {{else}}
-      <div class="resign">Resign</div>
+      <div class="end-center">
+        <div class="resign end-button">Resign</div>
+      </div>
+      The game is underway. <br/>
       {{#if equal player turn}}
-        Your turn
+        It is currently your turn. <br/>
+        Click on a square to take your turn. <br/>
       {{else}}
-        Your opponent's turn
+        It is currently your opponent's turn. <br/>
+        Please be patient. <br/>
       {{/if}}
     {{/if}}
   </div>
@@ -55,6 +90,33 @@
 
 <template name="row">
   {{#each vals}}
-    <div class="ttt-button player{{player}} col{{@index}} turn{{turn}}" data-col="{{@index}}">{{this}}</div>
+    <div class="ttt-button player{{player}} col{{@index}} turn{{turn}} mark{{this}}" data-col="{{@index}}">{{this.[0]}}</div>
   {{/each}}
+</template>
+
+<template name="header">
+  <div class="header">
+    <div class="content">
+      <div class="main-header">
+        TIC TAC TOE
+        <div class="sub-header">
+          <div class="sub-header-element">
+            <a href="/player2">player2</a> 
+          </div>
+          <div class="sub-header-space"></div>
+          <div class="sub-header-element">
+            <a href="/player1">player1</a> 
+          </div>
+          <div class="sub-header-space"></div>
+          <div class="sub-header-element">
+            <a href="https://en.wikipedia.org/wiki/Tic-tac-toe">how to play</a>
+          </div>
+          <div class="sub-header-space"></div>
+          <div class="sub-header-element">
+            <a href="/">home</a> 
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>

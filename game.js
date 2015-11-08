@@ -14,6 +14,9 @@ if (Meteor.isClient) {
     'click .reset': function(e) {
       // Subtract the winner from three to get the id of the other player
       var curStart = 3 - Meta.find({}).fetch()[0]['victor'];
+      if (curStart == 3) {
+        curStart = Math.random() > 0.5 ? 1 : 2;
+      }
       console.log(curStart);
       clearGrid();
       var docId = Meta.find({}).fetch()[0]['_id'];
@@ -146,9 +149,16 @@ function clearGrid() {
   Grid.update(id2, {$set: {vals: [' ', ' ', ' ']}});
 }
 
-function win(player) {
+function win(player, a, b, c) {
+  var winsArr = Meta.find({}).fetch()[0]['wins'];
+  winsArr[player - 1] += 1;
   var docId = Meta.find({}).fetch()[0]['_id'];
-  Meta.update(docId, {$set: {turn: 0}});
+  Meta.update(docId, {$set: {turn: 0, victor: player, wins: winsArr}});
+  console.log([a, b, c]);
+  var pChar = player == 1 ? 'Xw' : 'Ow';
+  updateGrid(a[0], a[1], pChar);
+  updateGrid(b[0], b[1], pChar);
+  updateGrid(c[0], c[1], pChar);
 }
 
 /**
@@ -181,14 +191,21 @@ function takeMove(e, player) {
 
   // Check if the current player won, first check the row and column and then both diagonals
   var curGrid = getGrid();
-  if (curGrid[3*rowNum] == pChar && curGrid[3*rowNum+1] == pChar && curGrid[3*rowNum+2] == pChar) {
-    win(player);
+  var done = true;
+  for (var i in curGrid) {
+    done = curGrid[i] == ' ' ? false : done;
+  }
+  if (done) {
+    var docId = Meta.find({}).fetch()[0]['_id'];
+    Meta.update(docId, {$set: {turn: 0, victor: 0}});
+  } else if (curGrid[3*rowNum] == pChar && curGrid[3*rowNum+1] == pChar && curGrid[3*rowNum+2] == pChar) {
+    win(player, [rowNum, 0], [rowNum, 1], [rowNum, 2]);
   } else if (curGrid[colNum] == pChar && curGrid[3+colNum] == pChar && curGrid[6+colNum] == pChar) {
-    win(player);
+    win(player, [0, colNum], [1, colNum], [2, colNum]);
   } else if (curGrid[0] == pChar && curGrid[4] == pChar && curGrid[8] == pChar) {
-    win(player);
+    win(player, [0, 0], [1, 1], [2, 2]);
   } else if (curGrid[2] == pChar && curGrid[4] == pChar && curGrid[6] == pChar) {
-    win(player);
+    win(player, [0, 2], [1, 1], [2, 0]);
   } else {
     var meta = Meta.find({}).fetch()[0];
     var nextTurn = meta['turn'] == 1 ? 2 : 1;

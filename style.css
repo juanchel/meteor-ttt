@@ -1,26 +1,203 @@
-.ttt-button {
-  height: 100px;
-  width: 100px;
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Raleway', sans-serif;
+  font-size: 14pt;
+  font-weight: 300;
 }
 
-.turn0 {
+a {
+  color: #00e6ff;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+a ~ a {
+  color: #ffa800;
+}
+
+.sub-header-element a {
+  color: #fff;
+  font-weight: 300;
+}
+
+.score {
+  font-size: 18pt;
+}
+
+.header {
+  height: 40px;
+  background: #202000;
+  color: #fff;
+  font-size: 18pt;
+}
+
+.content {
+  width: 960px;
+  margin: 0 auto;
+}
+
+.main-header {
+  padding: 5px 10px 0px;
+}
+
+.sub-header {
+  position: relative;
+  float: right;
+  right: -5px;
+  top: -5px;
+  font-size: 12pt;
+}
+
+.sub-header-element {
+  padding: 10px 5px 0px;
+  float: right;
+  height: 30px;
+}
+
+.sub-header-element:hover {
   background: #444;
 }
 
-.turn1 {
-  background: #f88;
+.sub-header-space {
+  float: right;
+  width: 5px;
+  height: 40px;
 }
 
-.turn2 {
-  background: #8f8;
+.main-body {
+  padding: 20px;
+  background: #f4f4f8;
 }
 
-.player1:hover {
-  background: red;
+.quote {
+  width: 900px;
+  padding: 10px;
+  background: #e0e0eb;
+  margin: 0px auto 10px;
 }
 
-.player2:hover {
-  background: blue;
+.center {
+  text-align: center;
+}
+
+.ttt-grid {
+  width: 400px;
+  margin: 30px auto 30px;
+}
+
+.ttt-row {
+  margin-top: 10px;
+}
+
+.ttt-button {
+  height: 120px;
+  width: 120px;
+  float: left;
+  margin: 0px 10px;
+  padding: 12px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 80px;
+  box-sizing: border-box;
+  box-shadow: 2px 2px #444450;
+}
+
+.ttt-button ~ .ttt-button {
+  margin-left: 0px;
+}
+
+.ttt-button:active {
+  box-shadow: 0px 0px;
+  margin: 2px 8px -2px 12px;
+}
+
+.ttt-button ~ .ttt-button:active {
+  margin: 2px 8px -2px 2px;
+}
+
+.turn1.player1.mark,
+.turn2.player2.mark {
+  background: white;
+}
+
+.turn1.player1.mark:hover {
+  background: #71deff;
+}
+
+.turn2.player2.mark:hover {
+  background: #ffc672;
+}
+
+.turn1.player2.mark,
+.turn2.player1.mark {
+  background: #cccccc;
+}
+
+.markX {
+  background: #00e6ff;
+}
+
+.markO {
+  background: #ffa800;
+}
+
+.turn0 {
+  background: #999999;
+}
+
+.turn0.markX {
+  background: #1b8c99;
+}
+
+.turn0.markO {
+  background: #996e1d;
+}
+
+.markXw {
+  animation: blinkerX 2s ease-in-out infinite;;
+}
+
+.markOw {
+  animation: blinkerO 2s ease-in-out infinite;;
+}
+
+@keyframes blinkerO {
+  0% {background: #ffa800;}
+  50% {background: #996e1d;}
+  100% {background: #ffa800;}
+}
+
+@keyframes blinkerX {
+  0% {background: #1b8c99;}
+  50% {background: #71deff;}
+  100% {background: #1b8c99;}
+}
+
+.end-center {
+  margin: 0px auto 30px;
+  width: 100px;
+}
+
+.end-button {
+  box-sizing: border-box;
+  height: 50px;
+  background: white;
+  padding-top: 13px;
+  box-shadow: 2px 2px #444450;
+}
+
+.end-center:active {
+  margin: 2px auto 32px;
+}
+
+.end-button:active {
+  box-shadow: 0px 0px #444450;
+  margin: 2px -2px -2px 2px;
+}
+
+.end-button:hover {
+  background: #d3b9c6;
 }
 
 /* CSS color coding for debugging

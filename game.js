@@ -10,18 +10,19 @@ if (Meteor.isClient) {
     }
   });
 
-  Template.row.helpers({
-    'turn': function() {
-      return Meta.find({}).fetch()[0]['turn'];
-    }
-  });
-
   Template.board.events({
     'click .reset': function(e) {
+      // Subtract the winner from three to get the id of the other player
+      var curStart = 3 - Meta.find({}).fetch()[0]['victor'];
+      console.log(curStart);
       clearGrid();
+      var docId = Meta.find({}).fetch()[0]['_id'];
+      Meta.update(docId, {$set: {turn: curStart, victor: curStart, resigned: false}});
     },
     'click .resign': function(e) {
-      clearGrid();
+      var docId = Meta.find({}).fetch()[0]['_id'];
+      var curWin = Router.current().route.getName() == 'player1' ? '2' : '1';
+      Meta.update(docId, {$set: {turn: 0, victor: curWin, resigned: true}});
     }
   })
 
@@ -39,10 +40,34 @@ if (Meteor.isClient) {
   });
 
   Template.registerHelper('player', function() {
-    if (Router.current().route.getName() == 'player1') {
-      return '1';
+    return Router.current().route.getName() == 'player1' ? '1' : '2';
+  });
+
+  Template.registerHelper('equal', function (a, b) {
+    return a == b;
+  });
+
+  Template.registerHelper('turn', function() {
+    if (Meta.find({}).fetch().length === 0) {
+      return 0;
     } else {
-      return '2';
+      return Meta.find({}).fetch()[0]['turn'];
+    }
+  });
+
+  Template.registerHelper('victor', function() {
+    if (Meta.find({}).fetch().length === 0) {
+      return 0;
+    } else {
+      return Meta.find({}).fetch()[0]['victor'];
+    }
+  });
+
+  Template.registerHelper('resigned', function() {
+    if (Meta.find({}).fetch().length === 0) {
+      return 0;
+    } else {
+      return Meta.find({}).fetch()[0]['resigned'];
     }
   });
 }
@@ -58,7 +83,7 @@ if (Meteor.isServer) {
     Grid.insert({vals: [' ', ' ', ' ']});
 
     Meta.remove({});
-    Meta.insert({turn: 1});
+    Meta.insert({turn: 1, victor: 2, resigned: false});
   });
 }
 
@@ -99,12 +124,18 @@ function clearGrid() {
   Grid.update(id2, {$set: {vals: [' ', ' ', ' ']}});
 }
 
+function win(player) {
+  var docId = Meta.find({}).fetch()[0]['_id'];
+  Meta.update(docId, {$set: {turn: 0}});
+}
+
 /**
  * Allows a player to take a move
  * @param {Object} e - Event passed in by the template
  * @param {number} player - The player number
  */
 function takeMove(e, player) {
+
   // Use the event to find the column and row of the clicked element
   var $col = $(e.currentTarget);
   var rowNum = $(e.currentTarget).parent().data('row');
@@ -117,6 +148,11 @@ function takeMove(e, player) {
     colNum = 0;
   }
 
+  // If there is already something in the spot, we just ignore this click
+  if (getGrid()[3*rowNum+colNum] != ' ') {
+    return;
+  }
+
   var pChar = player == 1 ? 'X' : 'O';
 
   // Update it in the collection
@@ -125,13 +161,13 @@ function takeMove(e, player) {
   // Check if the current player won, first check the row and column and then both diagonals
   var curGrid = getGrid();
   if (curGrid[3*rowNum] == pChar && curGrid[3*rowNum+1] == pChar && curGrid[3*rowNum+2] == pChar) {
-    clearGrid();
+    win(player);
   } else if (curGrid[colNum] == pChar && curGrid[3+colNum] == pChar && curGrid[6+colNum] == pChar) {
-    clearGrid();
+    win(player);
   } else if (curGrid[0] == pChar && curGrid[4] == pChar && curGrid[8] == pChar) {
-    clearGrid();
+    win(player);
   } else if (curGrid[2] == pChar && curGrid[4] == pChar && curGrid[6] == pChar) {
-    clearGrid();
+    win(player);
   } else {
     var meta = Meta.find({}).fetch()[0];
     var nextTurn = meta['turn'] == 1 ? 2 : 1;

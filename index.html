@@ -17,17 +17,35 @@
 
 <template name="board">
   Player {{player}}
-
   {{#each grid}}
     <div class="ttt-row row{{@index}}" data-row="{{@index}}">{{> row}}</div>
   {{/each}}
-
-  <div class='resign'>Resign</div>
-  <div class='reset'>Reset</div>
+  
+  <div class=''>
+    {{#if equal 0 turn}}
+      <div class='reset'>Reset</div>
+      The game is over!
+      {{#if equal player victor}}
+        You have emerged victorious! You will go second next.
+        {{#if resigned}}
+          Your opponent resigned!
+        {{/if}}
+      {{else}}
+        You got bodied! Don't worry you get to go first next time.
+      {{/if}}
+    {{else}}
+      <div class='resign'>Resign</div>
+      {{#if equal player turn}}
+        Your turn
+      {{else}}
+        Your opponent's turn
+      {{/if}}
+    {{/if}}
+  </div>
 </template>
 
 <template name="row">
   {{#each vals}}
-    <div class="ttt-button player{{player}} col{{@index}} turn{{turn}}" data-col="{{@index}}">{{this.[0]}}</div>
+    <div class="ttt-button player{{player}} col{{@index}} turn{{turn}}" data-col="{{@index}}">{{this}}</div>
   {{/each}}
 </template>

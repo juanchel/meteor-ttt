@@ -7,8 +7,8 @@
 
 <template name="game">
   Welcome to tic tac toe
-  <a href='/player1'>Player 1</a>
-  <a href='/player2'>Player 2</a>
+  <a href="/player1">Player 1</a>
+  <a href="/player2">Player 2</a>
 </template>
 
 <template name="play">
@@ -16,14 +16,23 @@
 </template>
 
 <template name="board">
+
+  <div class="score">
+    {{#if equal player 1}}
+      {{winsone}} - {{winstwo}}
+    {{else}}
+      {{winstwo}} - {{winsone}}
+    {{/if}}
+  </div>
+
   Player {{player}}
   {{#each grid}}
     <div class="ttt-row row{{@index}}" data-row="{{@index}}">{{> row}}</div>
   {{/each}}
   
-  <div class=''>
+  <div class="">
     {{#if equal 0 turn}}
-      <div class='reset'>Reset</div>
+      <div class="reset">Reset</div>
       The game is over!
       {{#if equal player victor}}
         You have emerged victorious! You will go second next.
@@ -34,7 +43,7 @@
         You got bodied! Don't worry you get to go first next time.
       {{/if}}
     {{else}}
-      <div class='resign'>Resign</div>
+      <div class="resign">Resign</div>
       {{#if equal player turn}}
         Your turn
       {{else}}

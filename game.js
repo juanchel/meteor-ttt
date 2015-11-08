@@ -22,7 +22,18 @@ if (Meteor.isClient) {
     'click .resign': function(e) {
       var docId = Meta.find({}).fetch()[0]['_id'];
       var curWin = Router.current().route.getName() == 'player1' ? '2' : '1';
-      Meta.update(docId, {$set: {turn: 0, victor: curWin, resigned: true}});
+      var winsArr = Meta.find({}).fetch()[0]['wins'];
+      winsArr[curWin - 1] += 1;
+      Meta.update(docId, {$set: {turn: 0, victor: curWin, resigned: true, wins: winsArr}});
+    }
+  });
+
+  Template.board.helpers({
+    'winsone': function() {
+      return metaQuery('wins')[0];
+    },
+    'winstwo': function() {
+      return metaQuery('wins')[1];
     }
   })
 
@@ -48,14 +59,11 @@ if (Meteor.isClient) {
   });
 
   Template.registerHelper('turn', function() {
-    if (Meta.find({}).fetch().length === 0) {
-      return 0;
-    } else {
-      return Meta.find({}).fetch()[0]['turn'];
-    }
+    return metaQuery('turn');
   });
 
   Template.registerHelper('victor', function() {
+    return metaQuery('victor');
     if (Meta.find({}).fetch().length === 0) {
       return 0;
     } else {
@@ -64,6 +72,7 @@ if (Meteor.isClient) {
   });
 
   Template.registerHelper('resigned', function() {
+    return metaQuery('resigned');
     if (Meta.find({}).fetch().length === 0) {
       return 0;
     } else {
@@ -83,10 +92,23 @@ if (Meteor.isServer) {
     Grid.insert({vals: [' ', ' ', ' ']});
 
     Meta.remove({});
-    Meta.insert({turn: 1, victor: 2, resigned: false});
+    Meta.insert({turn: 1, victor: 2, resigned: false, wins: [0, 0]});
   });
 }
 
+
+/**
+ * Returns the value of the key in the main element in the meta db.
+ * @param {string} qkey - The key to query on.
+ * @returns {*} The result of the query, or 0 if the db is not populated.
+ */
+function metaQuery(qkey) {
+  if (Meta.find({}).fetch().length === 0) {
+    return 0;
+  } else {
+    return Meta.find({}).fetch()[0][qkey];
+  }
+}
 
 /**
  * Updates the game grid.
@@ -135,7 +157,6 @@ function win(player) {
  * @param {number} player - The player number
  */
 function takeMove(e, player) {
-
   // Use the event to find the column and row of the clicked element
   var $col = $(e.currentTarget);
   var rowNum = $(e.currentTarget).parent().data('row');

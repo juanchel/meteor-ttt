@@ -3,13 +3,15 @@ This my deliverable for challenge 1: a website that allows two people to play ti
 #### How to play it
 
 ##### Setup
-If you download this repo, you should just be able to run it from within its directory with `meteor`. This project uses [iron-router](https://github.com/iron-meteor/iron-router) in addition to the default meteor stack.
+If you download this repo, you should just be able to run it from within its directory with `meteor`. This project uses [iron-router](github.com/iron-meteor/iron-router) in addition to the default meteor stack. The app also uses some Google fonts so internet connection is required to see the views as intended.
+
+The project's also deployed on Meteor's testing site [here](tttchallenge.meteor.com), but loading it might take a while if the app hasn't been active on the site.
 
 ##### Navigation
 There are three "pages" in the app, a landing page at '/', and one for each player, at '/player1' and '/player2'. To play the game, you can navigate to one of the player's pages from the main page or go straight to one of the player's pages.
 
 ##### Rules
-The rules of tic tac toe behave normally. The player that loses gets to go first for the next game, a player is chosen at random if there is a tie. During a game, either player may resign at any time by pressing the resign button. After a game is over, either player may hit the reset button to start a new game.
+The rules of tic tac toe behave normally. The player that loses gets to go first for the next game, a player is chosen at random if there is a tie. If this is the first time the server is run, player 1 will go first. During a game, either player may resign at any time by pressing the resign button. After a game is over, either player may hit the reset button to start a new game. The game state is reset whenever the server starts itself up.
 
 #### Implementation
 

@@ -1,0 +1,56 @@
+.ttt-button {
+  height: 100px;
+  width: 100px;
+}
+
+.turn0 {
+  background: #444;
+}
+
+.turn1 {
+  background: #f88;
+}
+
+.turn2 {
+  background: #8f8;
+}
+
+.player1:hover {
+  background: red;
+}
+
+.player2:hover {
+  background: blue;
+}
+
+/* CSS color coding for debugging
+.row0 .col0 {
+  background: #ff0;
+}
+.row0 .col1 {
+  background: #cc0;
+}
+.row0 .col2 {
+  background: #990;
+}
+
+.row1 .col0 {
+  background: #f0f;
+}
+.row1 .col1 {
+  background: #c0c;
+}
+.row1 .col2 {
+  background: #909;
+}
+
+.row2 .col0 {
+  background: #0ff;
+}
+.row2 .col1 {
+  background: #0cc;
+}
+.row2 .col2 {
+  background: #099;
+}
+*/

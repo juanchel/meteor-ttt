@@ -5,7 +5,7 @@
 <body>
 </body>
 
-<template name="main">
+<template name="game">
   Welcome to tic tac toe
   <a href='/player1'>Player 1</a>
   <a href='/player2'>Player 2</a>
@@ -16,15 +16,18 @@
 </template>
 
 <template name="board">
-  {{player}}
+  Player {{player}}
 
   {{#each grid}}
     <div class="ttt-row row{{@index}}" data-row="{{@index}}">{{> row}}</div>
   {{/each}}
+
+  <div class='resign'>Resign</div>
+  <div class='reset'>Reset</div>
 </template>
 
 <template name="row">
   {{#each vals}}
-    <div class="ttt-button player{{player}} col{{@index}}" data-col="{{@index}}">{{this}}</div>
+    <div class="ttt-button player{{player}} col{{@index}} turn{{turn}}" data-col="{{@index}}">{{this.[0]}}</div>
   {{/each}}
 </template>
